@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/feature5.jpg') }}") no-repeat center center / cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .history-container {
+            background: rgba(90, 10, 90, 0.85); /* Same violet, semi-transparent */
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.15);
+            padding: 35px;
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            position: relative;
+            overflow: hidden;
+        }
+    
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white;
+        }
+    
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: white;
+        }
+    
+        th {
+            background-color: rgba(90, 10, 90, 0.85); /* Violet transparent in table header */
+        }
+    
+        .action-btn {
+            padding: 8px 12px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 30px;
+            font-size: 16px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+    
+        .download-btn {
+            background-color: #007BFF;
+        }
+    
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+    
+        .delete-btn {
+            background-color: #FF0000;
+        }
+    
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    
+        .back-link {
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    
+        .back-link:hover {
+            color: #f1f1f1;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="history-container">
+        <h2>User History</h2>
+        <div class="table-container">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Time Stamp</th>
+                        <th>Last Edits</th>
+                        <th>Download</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in files %}
+                    <tr>
+                        <td>{{ file.file_name }}</td>
+                        <td>{{ file.upload_time.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                        <td>{{ file.edited_text if file.edited_text else file.recognized_text }}</td>
+                        <td>
+                            <a href="{{ url_for('app3.download', file_name=file.file_name) }}">
+                                <button class="action-btn download-btn">Download</button>
+                            </a>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('app3.delete_file', file_name=file.file_name) }}" method="POST">
+                                <button type="submit" class="action-btn delete-btn">Delete</button>
+                            </form>
+                        </td>                
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <a href="{{ url_for('app2.dashboard') }}" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html>

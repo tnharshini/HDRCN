@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/upload.jpg') }}");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            background: rgba(100, 5, 86, 0.755);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 380px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            position: absolute;
+            top: 51%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 73.3vh;
+            overflow-y: auto;
+        }
+        
+        h2 {
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        p {
+            color: gray;
+            font-size: 14px;
+        }
+
+        a{
+            color: wheat;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        label {
+            text-align: left;
+            font-weight: bold;
+            color:white;
+        }
+        
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            background: blue;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .or {
+            margin: 10px 0;
+            color: gray;
+            font-size: 12px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .google, .facebook {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .google {
+            background: white;
+            border: 1px solid red;
+            color: red;
+        }
+        
+        .facebook {
+            background: white;
+            border: 1px solid blue;
+            color: blue;
+        }
+        
+        .switch {
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+        <p>Join us today!</p>
+        <form onsubmit="return registerUser(event)">
+            <label>Name</label>
+            <input type="text" id="reg-name" placeholder="Enter your name" required>
+        
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="Enter email" required>
+        
+            <label>Date of Birth</label>
+            <input type="date" id="reg-dob" required>
+        
+            <label>Phone Number</label>
+            <input type="tel" id="reg-phno" placeholder="Enter phone number" required>
+        
+            <label>Address</label>
+            <textarea id="reg-address" placeholder="Enter address" required></textarea>
+        
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="Enter password" required>
+        
+            <label>Confirm Password</label>
+            <input type="password" id="reg-confirm-password" placeholder="Confirm password" required>
+        
+            <button type="submit" class="btn">Sign Up</button>
+        
+            <p class="switch">Already have an account? <a href="/">Login instead</a></p>
+        </form>        
+    </div>
+
+    <script>
+        function registerUser(event) {
+            event.preventDefault();
+
+            let userData = {
+                name: document.getElementById('reg-name').value,
+                email: document.getElementById('reg-email').value,
+                dob: document.getElementById('reg-dob').value,
+                phno: document.getElementById('reg-phno').value,
+                address: document.getElementById('reg-address').value,
+                password: document.getElementById('reg-password').value,
+                confirmPassword: document.getElementById('reg-confirm-password').value
+            };
+
+            if (userData.password !== userData.confirmPassword) {
+                alert('Passwords do not match!');
+                return false;
+            }
+
+            if (!/^\d{10}$/.test(userData.phno)) {
+                alert('Invalid phone number! Must be 10 digits.');
+                return false;
+            }
+
+            fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) window.location.href = "/";
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Something went wrong! Please try again.");
+            });
+        }
+    </script>
+</body>
+</html>

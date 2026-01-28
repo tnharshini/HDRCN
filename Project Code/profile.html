@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/feature5.webp') }}") no-repeat center center / cover;; /* Your original background color */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header, .container, .footer {
+            background-color: rgba(92, 15, 92, 0.85); /* Same violet shade with some transparency */
+            color: #ffffff;
+        }
+        
+        .container {
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            width: 400px; /* Slightly bigger than before */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            text-align: left;
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        input {
+            width: 94%; /* Adjusted so it doesn’t touch the container edges */
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+        }
+        
+        input:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+        }
+
+        .btn {
+            background: rgb(90, 10, 90);
+            color: white;            
+            border-color: white;
+            padding: 12px;            
+            border: 2px solid white; 
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Ensures no underline */
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: black;
+            color: rgb(90, 10, 90);
+            transform: scale(1.1);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center; /* Center align buttons */
+            gap: 150px; /* Reduce space between buttons */
+            margin-top: 15px;
+        }
+
+        .btn-small {
+            padding: 10px 20px; /* Adjusted padding for a smaller width */
+            font-size: 14px; /* Slightly smaller text */
+            width: auto; /* Ensures it sizes naturally */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Profile</h2>
+        <form id="profile-form">
+            <label>Name:</label>
+            <input type="text" id="name" value="{{ user[0] }}" required>
+
+            <label>Email:</label>
+            <input type="email" id="email" value="{{ user[1] }}" disabled>
+
+            <label>Date of Birth:</label>
+            <input type="date" id="dob" value="{{ user[2] }}" required>
+
+            <label>Phone Number:</label>
+            <input type="text" id="phno" value="{{ user[3] }}" required>
+
+            <label>Address:</label>
+            <input type="text" id="address" value="{{ user[4] }}" required>
+
+        </form>
+
+        <div class="btn-container">
+            <button type="button" class="btn btn-small" onclick="updateProfile()">Save Changes</button>
+            <a href="/dashboard" class="btn btn-small">Back</a>
+        </div>        
+    </div>
+
+    <script>
+        function updateProfile() {
+            let name = document.getElementById('name').value;
+            let dob = document.getElementById('dob').value;
+            let phno = document.getElementById('phno').value;
+            let address = document.getElementById('address').value;
+
+            fetch('/update_profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    dob: dob,
+                    phno: phno,
+                    address: address
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

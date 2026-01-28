@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Text Recognition & Translation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(90, 10, 90);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            font-size: 32px;
+            font-weight: bold;
+            color: black;
+            padding: 20px 50px;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .file-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .file-display img {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+            max-height: 600px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .file-display div {
+            width: 45%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .file-display h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 2px solid #7d2689;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .translate {
+            margin-top: 20px;
+        }
+
+        select {
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        button {
+            background: rgba(150, 97, 150, 0.612);
+            color:white;
+            border-color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+            transition: 0.3s;
+            position: relative;
+            border: 2px solid white; 
+            margin-right: 7px;
+        }
+
+        button:hover {
+            background: black;
+            color: rgb(90, 10, 90);
+            transform: scale(1.1);
+        }
+
+        h3{
+            color: white;
+        }
+
+        .translated-text {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #7d2689;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if processing %}
+            <div class="content" style="text-align: center;">Processing... Please wait.</div>
+        {% else %}
+            <div class="file-display">
+                <!-- Left side for uploaded image -->
+                <div>
+                    <h3>Your Document:</h3>
+                    <img src="data:image/png;base64,{{ image_base64 }}" alt="Uploaded Document">
+                </div>
+
+                <!-- Right side for processed text and translation -->
+                <div>
+                    <h3>Processed Text:</h3>
+                    <form method="POST" action="{{ url_for('app3.display_result') }}">
+                        <textarea id="recognized-text" name="recognized_text" required>{{ recognized_text }}</textarea>
+                        <button type="submit">Save Edits</button>
+                        <button type="button" onclick="downloadText('recognized-text', 'processed_text.txt')">Download</button>
+                    </form>
+
+                    <h3>Select Regional Language for Translation:</h3>
+                    <form method="POST" action="{{ url_for('app3.translate') }}">
+                        <input type="hidden" name="recognized_text" value="{{ recognized_text }}">                    
+                        <select name="language">
+                            <option value="en" {% if language == 'en' %}selected{% endif %}>English</option>
+                            <option value="ta" {% if language == 'ta' %}selected{% endif %}>Tamil</option>
+                            <option value="hi" {% if language == 'hi' %}selected{% endif %}>Hindi</option>
+                            <option value="es" {% if language == 'es' %}selected{% endif %}>Spanish</option>
+                            <option value="fr" {% if language == 'fr' %}selected{% endif %}>French</option>
+                        </select>
+                        <button type="submit">Translate</button>
+                    </form>
+
+                    {% if translated_text %}
+                        <h3>Translated Text:</h3>
+                        <form method="POST" action="{{ url_for('app3.display_result') }}">
+                            <textarea id="translated-text" name="translated_text" required>{{ translated_text }}</textarea>
+                            <button type="submit">Save Edits</button>
+                            <button type="button" onclick="downloadText('translated-text', 'translated_text.txt')">Download</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        function downloadText(textareaId, filename) {
+            let text = document.getElementById(textareaId).value;
+            let blob = new Blob([text], { type: "text/plain" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

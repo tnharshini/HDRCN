@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: "Poppins", sans-serif;
+            background: rgb(90, 10, 90);
+            color: white;
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        
+        nav a:hover {
+            color: #ff5722;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background: url("{{ url_for('static', filename='images/dash.jpg') }}") no-repeat center center/cover;
+            position: relative;
+            color: white;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .hero h1, .hero p {
+            position: relative;
+        }
+        
+        /* CTA Button */
+        .cta {
+            background: rgb(90, 10, 90);
+            color:white;
+            border-color: white;
+            padding: 12px 25px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.3s;
+            position: relative;
+            border: 2px solid white; 
+        }
+        
+        .cta:hover {
+            background: black;
+            color: rgb(90, 10, 90);
+            transform: scale(1.1);
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            color: white;
+        }
+
+        .feature.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .feature img {
+            width: 400px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .feature .text {
+            flex: 1;
+            min-width: 280px;
+            max-width: 600px;
+        }
+
+        .feature .text h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .feature .text p {
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #FFB347;
+            color: #2C003E;
+            font-weight: bold;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ffa726;
+        }
+
+
+        /* Profile Dropdown */
+        .profile-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-profile {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            min-width: 150px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            top: 50px;
+            right: 0;
+            z-index: 100;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+
+        .dropdown-content a:hover {
+            background: rgb(90, 10, 90);
+            color: white;
+        }
+
+        .profile-container:hover .dropdown-content {
+            display: block;
+        }
+
+        .user-initials {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: rgb(90, 10, 90);
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 0 8px rgba(255,255,255,0.2);
+            transition: 0.3s;
+        }
+        .user-initials:hover {
+            background: rgb(90, 10, 90);
+            color: white;
+        }
+
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .card h2 {
+            color:white;
+        }
+        
+        .card p {
+            color:white;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: 50px;
+            color:white;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">⚡OptiText</div>
+            <nav>
+                <a href="/dashboard">Home</a>
+                <a href="/features">Features</a>
+                <a href="/history">History</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>    
+        <div class="profile-container">
+            <div class="user-initials" onclick="toggleDropdown()">
+                {{ session['name'][:2]|upper }}
+            </div>            
+                <div class="dropdown-content" id="dropdown-menu">
+                    <a href="/profile">Profile</a>
+                    <a href="/">Logout</a>
+                </div>    
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Revolutionizing AI Integration</h1>
+        <p>Unlock limitless possibilities with real-time AI-powered automation.</p>
+        <button class="cta" onclick="location.href='/index';">Get Started</button>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="feature">
+            <img src="{{ url_for('static', filename='images/feature1.jpg') }}" alt="Smart Analysis">
+            <div class="text">
+                <h1>Recognise handwritten, typewritten, and printed documents</h1>
+                <p>Translate text easily from handwritten notes, printed content, and more. Advanced OCR systems ensure accurate and fast recognition.</p>
+            </div>
+        </div>
+    
+        <div class="feature reverse">
+            <img src="{{ url_for('static', filename='images/feature3.webp') }}" alt="Public AI Models">
+            <div class="text">
+                <h1>Save time and resources with public AI models</h1>
+                <p>Leverage models trained by the community to process a large number of documents efficiently.</p>
+            </div>
+        </div>
+    
+        <div class="feature">
+            <img src="{{ url_for('static', filename='images/feature2.jpg') }}" alt="Bulk Processing">
+            <div class="text">
+                <h1>Process large amounts of documents</h1>
+                <p>Work effectively with big collections of data. Transkribus makes data extraction simple for research, publishing, and more.</p>
+            </div>
+        </div>
+    </section>    
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 OptiText. All rights reserved.</p>
+    </footer>
+    <script>
+        function toggleDropdown() {
+            let dropdown = document.getElementById("dropdown-menu");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+
+        document.addEventListener("click", function(event) {
+            let profileContainer = document.querySelector(".profile-container");
+            let dropdown = document.getElementById("dropdown-menu");
+            if (!profileContainer.contains(event.target)) {
+                document.getElementById("dropdown-menu").style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

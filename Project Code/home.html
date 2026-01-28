@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: rgb(90, 10, 90);
+            color: white;
+            padding-left: 42px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+            font-size: 18px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .sidebar nav a:hover {
+            color: #ff5722;
+        }
+
+        .sidebar .user-profile {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .sidebar .user-profile button {
+            background: rgb(90, 10, 90);
+            color: black;
+            padding: 12px 25px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 30px;
+            border: 2px solid black; 
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .sidebar .user-profile button:hover {
+            background: black;
+            color: rgb(90, 10, 90);
+            transform: scale(1.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background: url("{{ url_for('static', filename='images/dash.jpg') }}") no-repeat center center/cover;
+            position: relative;
+            color: white;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .hero h1 {
+            font-size: 50px;
+            margin: 0;
+            position: relative;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .hero, .features {
+            padding: 120px 20px;
+            margin-left: 250px; /* Ensure content starts after sidebar */
+        }
+        
+        /* CTA Button */
+        .cta {
+            background: rgb(90, 10, 90);
+            color: black;
+            border-color: black;
+            padding: 12px 25px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.3s;
+            position: relative;
+            border: 2px solid black; 
+        }
+        
+        .cta:hover {
+            background: black;
+            color: rgb(90, 10, 90);
+            transform: scale(1.1);
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px;
+            flex-wrap: wrap;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            width: 300px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .card h2 {
+            color: white;
+        }
+        
+        .card p {
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: 50px;
+            color: white;
+            margin-left: 250px; /* Align footer with content */
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="sidebar">
+        <div class="logo">⚡AI Dashboard</div>
+        <nav>
+            <a href="/home">Home</a>
+            <a href="/features">Features</a>
+            <a href="/support">Support</a>
+            <a href="/downloads">Downloads</a>
+        </nav>
+        <!-- Replace the user profile section with a logout button -->
+        <div class="user-profile">
+            <button class="cta" onclick="location.href='/';">Logout</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Revolutionizing AI Integration</h1>
+        <p>Unlock limitless possibilities with real-time AI-powered automation.</p>
+        <button class="cta" onclick="location.href='/index';">Get Started</button>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="card">
+            <h2>🔍 Smart Analysis</h2>
+            <p>Instantly process and analyze data with AI precision. Integrate seamlessly with your existing systems.</p><br>
+            <a href="/smartanalysis" class="cta">Learn More</a>
+        </div>
+        <div class="card">
+            <h2>🚀 Flash Speed</h2>
+            <p>Experience AI at its best with ultra-fast response times, ensuring optimal performance.</p><br>
+            <a href="/flashspeed" class="cta">Learn More</a>
+        </div>
+        <div class="card">
+            <h2>🔒 Secure & Reliable</h2>
+            <p>End-to-end encryption and reliability for all your sensitive data, ensuring privacy and safety.</p><br>
+            <a href="/securereliable" class="cta">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 AI Dashboard. All rights reserved.</p>
+    </footer>
+</body>
+</html>

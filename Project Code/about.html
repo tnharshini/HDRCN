@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us | OptiText</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:  url("{{ url_for('static', filename='images/feature9.jpg') }}") no-repeat center center / cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      max-width: 900px;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    h3 {
+      color: white;
+      margin-top: 40px;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: white;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 30px;
+      font-size: 16px;
+      color: white;
+      background-color: transparent;
+      border: 2px solid white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+      background-color: black;
+      color: rgb(90, 10, 90);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>About OptiText</h1>
+    <p>
+      OptiText is a cutting-edge handwritten text recognition platform. Powered by advanced AI, we transform messy or complex handwritten input into clean, editable digital text.
+    </p>
+
+    <h3>Our Mission</h3>
+    <p>
+      We aim to make handwritten content as usable and accessible as printed text. With OptiText, you can scan, interpret, and convert notes, forms, and documents in seconds.
+    </p>
+
+    <h3>Key Features</h3>
+    <p>
+      • Supports a wide range of handwriting styles and languages<br>
+      • Converts text into audio for better accessibility<br>
+      • Simple upload-and-process workflow<br>
+      • Optimized for both desktop and mobile use
+    </p>
+
+    <h3>Why Choose OptiText?</h3>
+    <p>
+      Unlike traditional OCR tools, OptiText focuses on handwritten input, trained with modern machine learning models. Whether you’re a student, teacher, archivist, or researcher, we’re here to bridge the gap between analog and digital.
+    </p>
+
+    <h3>Built with Purpose</h3>
+    <p>
+      OptiText combines cutting-edge AI with elegant interface design. Our goal is to provide a fast, user-friendly experience while maintaining high recognition accuracy. From casual use to large-scale digitization, we're ready for it all.
+    </p>
+
+    <a href="/dashboard" class="btn">Back to Home</a>
+  </main>
+</body>
+</html>

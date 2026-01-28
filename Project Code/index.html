@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Text Translation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='images/feature3.jpg') }}") no-repeat center center/cover; /* Violet background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+        .header, .upload-box, .footer {
+            background-color: rgba(102, 8, 102, 0.614); /* Same violet shade with some transparency */
+            color: #ffffff;
+        }
+
+        .upload-box {
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.15);
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            max-height: 700px;
+            position: relative;
+        }
+
+        h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        p {
+            font-size: 14px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .button-style {
+            background: rgb(90, 10, 90);
+            color: white;
+            border-color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+            transition: 0.3s;
+            position: relative;
+            border: 2px solid white; 
+        }
+
+        .button-style:hover {
+            background: black;
+            color: rgb(90, 10, 90);
+            transform: scale(1.1);
+        }
+
+        #submit-btn {
+            display: none; /* Initially hidden */
+        }
+
+        .progress {
+            margin-top: 20px;
+            font-size: 16px;
+            color: white;
+        }
+
+        /* Style for flash message */
+        .alert.warning {
+            background-color: #c67dbb; /* Light red background */
+            color: #721c24; /* Dark red text */
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-right: 10%; /* Shift the alert box to the left */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="upload-box">
+        <h3>Image to Text Translation</h3>
+        <p>Upload an image, extract text, edit it, and translate seamlessly.</p>
+
+        <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file-upload" id="upload-label" class="button-style">⬆️ Upload Image</label>
+            <input id="file-upload" type="file" name="file" accept="image/*" required onchange="handleFileSelection()">
+            
+            <button type="submit" id="submit-btn" class="button-style">Submit</button>
+        </form>
+
+        <div id="progress-msg" class="progress"></div> <!-- Progress message -->
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="alert {{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Redirect Prompt based on flag -->
+    {% if redirect_to_history %}
+        <script>
+            var confirmRedirect = confirm("This file already exists. Would you like to go to history?");
+            if (confirmRedirect) {
+                window.location.href = "{{ url_for('app3.history') }}"; // Redirect to history page
+            }
+        </script>
+    {% endif %}
+
+    <script>
+        function handleFileSelection() {
+            var fileInput = document.getElementById("file-upload");
+            var uploadLabel = document.getElementById("upload-label");
+            var submitButton = document.getElementById("submit-btn");
+
+            if (fileInput.files.length > 0) {
+                var fileName = fileInput.files[0].name;
+                var existingFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
+
+                if (existingFiles.includes(fileName)) {
+                    var confirmOverwrite = confirm("This file has already been uploaded. Uploading again will replace the previous version. Do you want to continue?");
+                    if (!confirmOverwrite) {
+                        fileInput.value = ""; // Reset selection
+                        return;
+                    }
+                }
+
+                uploadLabel.style.display = "none"; // Hide "Choose Image" button
+                submitButton.style.display = "inline-block"; // Show "Submit" button
+            }
+        }
+
+        document.querySelector("#upload-form").addEventListener("submit", function() {
+            document.getElementById("progress-msg").textContent = "Processing... Please wait.";
+        });
+    </script>
+
+</body>
+</html>

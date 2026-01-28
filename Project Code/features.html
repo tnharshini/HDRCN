@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Features - OptiText</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("{{ url_for('static', filename='images/feature7.jpg') }}") no-repeat center center / cover;
+            /* Use your uploaded image */
+        }
+    
+        .header, .feature, .footer {
+            background-color: rgba(90, 10, 90, 0.85); /* Same violet shade with some transparency */
+            color: #ffffff;
+        }
+    
+        .header {
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+    
+        .features-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+    
+        .feature {
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+    
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+    
+        .feature h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+    
+        .feature p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: white;
+        }
+    
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="header">
+        OptiText – Key Features
+    </div>
+
+    <div class="features-container">
+        <div class="feature">
+            <h2>📝 Handwritten Text Recognition</h2>
+            <p>Upload handwritten documents and let OptiText extract clean, editable digital text with high accuracy.</p>
+        </div>
+
+        <div class="feature">
+            <h2>✏️ Editable Text Interface</h2>
+            <p>Easily review and make corrections to the recognized text in an intuitive editor.</p>
+        </div>
+
+        <div class="feature">
+            <h2>🌍 Translation Capabilities</h2>
+            <p>Translate the recognized or edited text into multiple languages for broader accessibility.</p>
+        </div>
+
+        <div class="feature">
+            <h2>📂 Upload History</h2>
+            <p>Keep track of your uploaded documents and revisit previous extractions anytime.</p>
+        </div>
+
+        <div class="feature">
+            <h2>🔐 Secure User Accounts</h2>
+            <p>Your information is protected with secure login, user sessions, and controlled file access.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 OptiText. All rights reserved.
+    </div>
+</body>
+</html>
